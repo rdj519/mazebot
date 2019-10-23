@@ -5,12 +5,24 @@ public class Bot {
 	private String state;
 	public Bot() 
 	{
-		this.symbol = 'O';
+		this.symbol = 'v';
 		this.state = "down"; //this means that the node is facing down (v), all simulations start with this. 
 	}
 	
+	public void updateSymbol()
+	{
+		if(this.state.equalsIgnoreCase("down"))
+			this.symbol = 'v';
+		else if(this.state.equalsIgnoreCase("up"))
+			this.symbol = '^';
+		else if(this.state.equalsIgnoreCase("left"))
+			this.symbol = '>'; 	//from bot's perspective
+		else if(this.state.equalsIgnoreCase("right"))
+			this.symbol = '<';
+	}
 	public char getSymbol()
 	{
+		updateSymbol();
 		return symbol;
 	}
 	
@@ -29,6 +41,8 @@ public class Bot {
 			this.state = "left";
 		else if(dir.equalsIgnoreCase("right"))
 			this.state = "right";
+		
+		updateSymbol();
 	}
 
 }
