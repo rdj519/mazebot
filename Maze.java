@@ -69,7 +69,6 @@ public class Maze {
 		return state[x][y];
 	}
 	
-	
 	/* display the maze */
 	public void display()
 	{
