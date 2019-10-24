@@ -49,24 +49,40 @@ public class Bot {
 		if(dir.equalsIgnoreCase("left"))
 		{
 			if(this.state.equalsIgnoreCase("down"))
+			{
 				this.state = "right";
+			}
 			else if(this.state.equalsIgnoreCase("up"))
+			{
 				this.state = "left";
+			}
 			else if(this.state.equalsIgnoreCase("left"))
+			{
 				this.state = "down";
+			}
 			else if(this.state.equalsIgnoreCase("right"))
+			{
 				this.state = "up";
+			}
 		}
 		else if(dir.equalsIgnoreCase("right"))
 		{
 			if(this.state.equalsIgnoreCase("down"))
+			{
 				this.state = "left";
+			}
 			else if(this.state.equalsIgnoreCase("up"))
+			{
 				this.state = "right";
+			}
 			else if(this.state.equalsIgnoreCase("left"))
+			{
 				this.state = "up";
+			}
 			else if(this.state.equalsIgnoreCase("right"))
+			{
 				this.state = "down";
+			}
 		}
 		
 		updateSymbol(prevState, dir);
