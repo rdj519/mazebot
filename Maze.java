@@ -38,9 +38,9 @@ public class Maze {
 				grid[i][j] = ' ';
 				state[i][j] = true;
 			}
-		grid[0][0] = b.getSymbol(); //starting point
 		this.currX = 0; //current x coordinate of bot
 		this.currY = 0; //current y coordinate of bot
+		grid[currX][currY] = b.getSymbol(); //starting point
 	}
 	
 	/* new location of bot, and displays the updated */
@@ -53,6 +53,14 @@ public class Maze {
 		display();
 	}
 	
+	/* determines if the bot has reached the goal (n,n) */
+	public boolean isFinished()
+	{
+		if( (currX == n-1) && (currY == n-1) )
+			return true;
+		else
+			return false;
+	}
 	/* returns the coordinates of the bot*/
 	public int getBotX()
 	{
@@ -63,7 +71,121 @@ public class Maze {
 		return currY;
 	}
 	
+	/* Moving the bot in different directions*/
+	/* moves to left */
+	public void moveLeft() throws Exception
+	{
+		try
+		{
+			if(getLeft())
+			{
+				update(currX-1, currY);
+			}
+		}
+		catch(Exception e)
+		{
+			//nothing
+		}
+	}
+	/* moves to right */
+	public void moveRight() throws Exception
+	{
+		try
+		{
+			if(getRight())
+			{
+				update(currX+1, currY);
+			}
+		}
+		catch(Exception e)
+		{
+			//nothing
+		}
+	}
+	/* moves to up */
+	public void moveUp() throws Exception
+	{
+		try
+		{
+			if(getUp())
+			{
+				update(currX, currY+1);
+			}
+		}
+		catch(Exception e)
+		{
+			//nothing
+		}
+	}
+	/* moves to down */
+	public void moveDown() throws Exception
+	{
+		try
+		{
+			if(getDown())
+			{
+				update(currX, currY-1);
+			}
+		}
+		catch(Exception e)
+		{
+			//nothing
+		}
+	}
+	
+	/* Determining environment around bot*/
+	/* gets the left of the bot*/
+	public boolean getLeft() throws Exception //NullPointerException
+	{
+		try
+		{
+			return state[currX-1][currY];
+		}
+		catch(Exception e)
+		{
+			return false; //means the bot is at the left edge 
+		}
+	}
+	/* gets the right of the bot*/
+	public boolean getRight() throws Exception //NullPointerException
+	{
+		try
+		{
+			return state[currX+1][currY];
+		}
+		catch(Exception e)
+		{
+			return false; //means the bot is at the right edge 
+		}
+	}
+	/* gets the up of the bot*/
+	public boolean getUp() throws Exception //NullPointerException
+	{
+		try
+		{
+			return state[currX][currY+1];
+		}
+		catch(Exception e)
+		{
+			return false; //means the bot is at the upper edge 
+		}
+	}
+	/* gets the down of the bot*/
+	public boolean getDown() throws Exception //NullPointerException
+	{
+		try
+		{
+			return state[currX][currY-1];
+		}
+		catch(Exception e)
+		{
+			return false; //means the bot is at the lower edge 
+		}
+	}
+	
+	
 	/* gets the state of a grid coordinate (since grid and state array are the same) */
+	/* if it is not either # or ' ', it is bot */
 	public boolean getGridState(int x, int y)
 	{
 		return state[x][y];
