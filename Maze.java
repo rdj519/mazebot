@@ -3,6 +3,7 @@ public class Maze {
 
 	private char grid[][]; //physical representation
 	private boolean state[][]; //state (if a coordinate should be explored)
+	//private boolean intersect[][]; //maps the coordinates that have more than one adjacent space
 	private int n; //dimension
 	private int currX, currY;
 	private Bot b;
@@ -72,116 +73,89 @@ public class Maze {
 	}
 	
 	/* Moving the bot in different directions*/
-	/* moves to left */
-	public void moveLeft() throws Exception
+	/* moves forward*/
+	public void moveForward() 
 	{
-		try
+		try 
 		{
-			if(getLeft())
+			if(getLeft()) //if there is space in the left
 			{
-				update(currX-1, currY);
+				b.turn("left");
+				if(b.getDir().equalsIgnoreCase("down")) // v
+					update(currX, currY-1);
+				else if(b.getDir().equalsIgnoreCase("up")) // ^
+					update(currX, currY+1);
+				else if(b.getDir().equalsIgnoreCase("left")) // <
+					update(currX-1, currY);
+				else if(b.getDir().equalsIgnoreCase("right")) // >
+					update(currX+1, currY);
 			}
+			else if(getFront())
+			{
+				if(b.getDir().equalsIgnoreCase("down"))
+					update(currX, currY-1);
+				else if(b.getDir().equalsIgnoreCase("up"))
+					update(currX, currY+1);
+				else if(b.getDir().equalsIgnoreCase("left"))
+					update(currX-1, currY);
+				else if(b.getDir().equalsIgnoreCase("right"))
+					update(currX+1, currY);
+			}
+			else
+			{
+				b.turn("right");
+			}
+			
 		}
 		catch(Exception e)
 		{
-			//nothing
+			
 		}
 	}
-	/* moves to right */
-	public void moveRight() throws Exception
-	{
-		try
-		{
-			if(getRight())
-			{
-				update(currX+1, currY);
-			}
-		}
-		catch(Exception e)
-		{
-			//nothing
-		}
-	}
-	/* moves to up */
-	public void moveUp() throws Exception
-	{
-		try
-		{
-			if(getUp())
-			{
-				update(currX, currY+1);
-			}
-		}
-		catch(Exception e)
-		{
-			//nothing
-		}
-	}
-	/* moves to down */
-	public void moveDown() throws Exception
-	{
-		try
-		{
-			if(getDown())
-			{
-				update(currX, currY-1);
-			}
-		}
-		catch(Exception e)
-		{
-			//nothing
-		}
-	}
-	
+
 	/* Determining environment around bot*/
 	/* gets the left of the bot*/
-	public boolean getLeft() throws Exception //NullPointerException
+	public boolean getLeft() //NullPointerException
 	{
-		try
+		try	
 		{
-			return state[currX-1][currY];
+			if(b.getDir().equalsIgnoreCase("down"))
+				return state[currX+1][currY]; // v =>
+			else if(b.getDir().equalsIgnoreCase("up"))
+				return state[currX-1][currY]; // <= ^
+			else if(b.getDir().equalsIgnoreCase("left"))
+				return state[currX][currY-1];
+			else if(b.getDir().equalsIgnoreCase("right"))
+				return state[currX][currY+1];
+			else return false;
 		}
 		catch(Exception e)
 		{
-			return false; //means the bot is at the left edge 
+			return false; //means the bot's left is at the edge 
 		}
 	}
-	/* gets the right of the bot*/
-	public boolean getRight() throws Exception //NullPointerException
+	/* gets the front of the bot*/
+	public boolean getFront()  //NullPointerException
 	{
 		try
 		{
-			return state[currX+1][currY];
+			if(b.getDir().equalsIgnoreCase("down"))
+				return state[currX][currY-1];
+			else if(b.getDir().equalsIgnoreCase("up"))
+				return state[currX][currY+1];
+			else if(b.getDir().equalsIgnoreCase("left"))
+				return state[currX-1][currY];
+			else if(b.getDir().equalsIgnoreCase("right"))
+				return state[currX+1][currY];
+			else
+				return false;
 		}
 		catch(Exception e)
 		{
-			return false; //means the bot is at the right edge 
+			return false; //means the bot is facing at the edge 
 		}
 	}
-	/* gets the up of the bot*/
-	public boolean getUp() throws Exception //NullPointerException
-	{
-		try
-		{
-			return state[currX][currY+1];
-		}
-		catch(Exception e)
-		{
-			return false; //means the bot is at the upper edge 
-		}
-	}
-	/* gets the down of the bot*/
-	public boolean getDown() throws Exception //NullPointerException
-	{
-		try
-		{
-			return state[currX][currY-1];
-		}
-		catch(Exception e)
-		{
-			return false; //means the bot is at the lower edge 
-		}
-	}
+
 	
 	
 	/* gets the state of a grid coordinate (since grid and state array are the same) */
@@ -205,10 +179,11 @@ public class Maze {
 		/* vertical plane (y) */
 		for(int i=0; i < n; i++)
 		{
-			System.out.println(i+1 + "  ");// 2 spaces
+			System.out.print(i+1 + "  ");// 2 spaces
 			for(int j=0; j<n; j++)
 				System.out.print(grid[i][j] + " ");
-			System.out.println(" " + i+1);
+			System.out.print("  ");
+			System.out.println(i+1);
 		}
 		
 		/* horizontal plane (x) */

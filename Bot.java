@@ -9,40 +9,77 @@ public class Bot {
 		this.state = "down"; //this means that the node is facing down (v), all simulations start with this. 
 	}
 	
-	public void updateSymbol()
+	public void updateSymbol(String prevState, String dir)
 	{
-		if(this.state.equalsIgnoreCase("down"))
-			this.symbol = 'v';
-		else if(this.state.equalsIgnoreCase("up"))
-			this.symbol = '^';
-		else if(this.state.equalsIgnoreCase("left"))
-			this.symbol = '>'; 	//from bot's perspective
-		else if(this.state.equalsIgnoreCase("right"))
-			this.symbol = '<';
+		
+		if(prevState.equalsIgnoreCase("down"))
+		{
+			if(dir.equalsIgnoreCase("right"))
+				this.symbol = '<';
+			else if(dir.equalsIgnoreCase("left"))
+				this.symbol = '>';
+		}
+		else if(prevState.equalsIgnoreCase("up"))
+		{
+			if(dir.equalsIgnoreCase("right"))
+				this.symbol = '>';
+			else if(dir.equalsIgnoreCase("left"))
+				this.symbol = '<';
+		}
+		else if(prevState.equalsIgnoreCase("left"))
+		{
+			if(dir.equalsIgnoreCase("right"))
+				this.symbol = '^';
+			else if (dir.equalsIgnoreCase("left"))
+				this.symbol = 'v';
+		}
+		else if(prevState.equalsIgnoreCase("right"))
+		{
+			if(dir.equalsIgnoreCase("right"))
+				this.symbol = 'v';
+			else if(dir.equalsIgnoreCase("left"))
+				this.symbol = '^';
+		}
 	}
+	
+	public void turn(String dir)
+	{
+		String prevState = this.state;
+
+		if(dir.equalsIgnoreCase("left"))
+		{
+			if(this.state.equalsIgnoreCase("down"))
+				this.state = "right";
+			else if(this.state.equalsIgnoreCase("up"))
+				this.state = "left";
+			else if(this.state.equalsIgnoreCase("left"))
+				this.state = "down";
+			else if(this.state.equalsIgnoreCase("right"))
+				this.state = "up";
+		}
+		else if(dir.equalsIgnoreCase("right"))
+		{
+			if(this.state.equalsIgnoreCase("down"))
+				this.state = "left";
+			else if(this.state.equalsIgnoreCase("up"))
+				this.state = "right";
+			else if(this.state.equalsIgnoreCase("left"))
+				this.state = "up";
+			else if(this.state.equalsIgnoreCase("right"))
+				this.state = "down";
+		}
+		
+		updateSymbol(prevState, dir);
+	}
+	
 	public char getSymbol()
 	{
-		updateSymbol();
 		return symbol;
 	}
 	
 	public String getDir()
 	{
 		return this.state;
-	}
-	
-	public void turn(String dir)
-	{
-		if(dir.equalsIgnoreCase("down"))
-			this.state = "down";
-		else if(dir.equalsIgnoreCase("up"))
-			this.state = "up";
-		else if(dir.equalsIgnoreCase("left"))
-			this.state = "left";
-		else if(dir.equalsIgnoreCase("right"))
-			this.state = "right";
-		
-		updateSymbol();
 	}
 
 }
