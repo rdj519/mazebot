@@ -1,4 +1,5 @@
 
+/* LEFT IS Y AND RIGHT IS X -- JAVA IS RETARDED*/
 public class Maze {
 
 	private char grid[][]; //physical representation
@@ -20,14 +21,14 @@ public class Maze {
 	/* creates wall by x and y coordinate*/
 	public void wallify(int x, int y)
 	{
-		grid[x][y] = '#';
-		state[x][y] = false;
+		grid[y][x] = '#';
+		state[y][x] = false;
 	}
 	
 	/* if free space leads to dead end, use this function */
 	public void falsify(int x, int y)
 	{
-		state[x][y] = false;
+		state[y][x] = false;
 	}
 	
 	/* initialize all grid board to be spaces */
@@ -41,16 +42,16 @@ public class Maze {
 			}
 		this.currX = 0; //current x coordinate of bot
 		this.currY = 0; //current y coordinate of bot
-		grid[currX][currY] = b.getSymbol(); //starting point
+		grid[currY][currX] = b.getSymbol(); //starting point
 	}
 	
 	/* new location of bot, and displays the updated */
 	public void update(int x, int y)
 	{
-		grid[currX][currY] = ' ';
+		grid[currY][currX] = ' ';
 		currX = x;
 		currY = y;
-		grid[currX][currY] = b.getSymbol();
+		grid[y][x] = b.getSymbol();
 		display();
 	}
 	
@@ -81,29 +82,51 @@ public class Maze {
 			if(getLeft()) //if there is space in the left
 			{
 				b.turn("left");
-				if(b.getDir().equalsIgnoreCase("down")) // v
-					update(currX, currY-1);
+				if(b.getDir().equalsIgnoreCase("right")) // > will move forward to the right
+				{
+					update(currX+1, currY); 
+				}
+				else if(b.getDir().equalsIgnoreCase("down")) // v will move downwards -1 y
+				{
+					update(currX, currY+1); //swapped Y
+				}
 				else if(b.getDir().equalsIgnoreCase("up")) // ^
-					update(currX, currY+1);
+				{
+					update(currX, currY-1); //swapped Y
+				}
+					
 				else if(b.getDir().equalsIgnoreCase("left")) // <
+				{
 					update(currX-1, currY);
-				else if(b.getDir().equalsIgnoreCase("right")) // >
-					update(currX+1, currY);
+				}
+					
 			}
 			else if(getFront())
 			{
 				if(b.getDir().equalsIgnoreCase("down"))
-					update(currX, currY-1);
+				{
+					update(currX, currY+1); //swapped Y
+				}
+					
 				else if(b.getDir().equalsIgnoreCase("up"))
-					update(currX, currY+1);
+				{
+					update(currX, currY-1); //swapped Y
+				}
+					
 				else if(b.getDir().equalsIgnoreCase("left"))
+				{
 					update(currX-1, currY);
+				}
+					
 				else if(b.getDir().equalsIgnoreCase("right"))
+				{
 					update(currX+1, currY);
+				}
 			}
 			else
 			{
 				b.turn("right");
+				update(currX, currY);
 			}
 			
 		}
@@ -119,14 +142,24 @@ public class Maze {
 	{
 		try	
 		{
+			/* if corners */
+			if((currY == 0 && b.getDir().equalsIgnoreCase("right")))
+				return false;
+			else if((currX == n-1 && b.getDir().equalsIgnoreCase("down")))
+				return false;
+			else if(currX == 0 && b.getDir().equalsIgnoreCase("up"))
+				return false;
+			else if(currY == n-1 && b.getDir().equalsIgnoreCase("left"))
+				return false;
+			
 			if(b.getDir().equalsIgnoreCase("down"))
-				return state[currX+1][currY]; // v =>
+				return state[currY][currX+1]; // v =>
 			else if(b.getDir().equalsIgnoreCase("up"))
-				return state[currX-1][currY]; // <= ^
+				return state[currY][currX-1]; // <= ^
 			else if(b.getDir().equalsIgnoreCase("left"))
-				return state[currX][currY-1];
+				return state[currY+1][currX]; //swapped Y
 			else if(b.getDir().equalsIgnoreCase("right"))
-				return state[currX][currY+1];
+				return state[currY-1][currX]; //swapped Y
 			else return false;
 		}
 		catch(Exception e)
@@ -139,14 +172,24 @@ public class Maze {
 	{
 		try
 		{
+			/* if corners */
+			if((currY == 0 && b.getDir().equalsIgnoreCase("up")))
+				return false;
+			else if(currX == n-1 && b.getDir().equalsIgnoreCase("right"))
+				return false;
+			else if(currX == 0 && b.getDir().equalsIgnoreCase("left"))
+				return false;
+			else if(currY == n-1 && b.getDir().equalsIgnoreCase("down"))
+				return false;
+			
 			if(b.getDir().equalsIgnoreCase("down"))
-				return state[currX][currY-1];
+				return state[currY+1][currX]; //swapped Y
 			else if(b.getDir().equalsIgnoreCase("up"))
-				return state[currX][currY+1];
+				return state[currY-1][currX]; //swapped Y
 			else if(b.getDir().equalsIgnoreCase("left"))
-				return state[currX-1][currY];
+				return state[currY][currX-1];
 			else if(b.getDir().equalsIgnoreCase("right"))
-				return state[currX+1][currY];
+				return state[currY][currX+1];
 			else
 				return false;
 		}
@@ -162,7 +205,7 @@ public class Maze {
 	/* if it is not either # or ' ', it is bot */
 	public boolean getGridState(int x, int y)
 	{
-		return state[x][y];
+		return state[y][x];
 	}
 	
 	/* display the maze */
@@ -192,6 +235,8 @@ public class Maze {
 			System.out.print(i+1 + " ");
 		
 		System.out.println();
+		
+		System.out.println("State: " + b.getDir());
 	}
 
 }

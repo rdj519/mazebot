@@ -1,6 +1,7 @@
 import java.util.*;
 /* The chosen algorithm will be implemented here, as well as the simulation, and counting of moves etc.*/
 
+/* JAVA IS RETARDED X AND Y BALIKTAD */
 
 /* The actual traversing of the bot is based on the state[][] array, grid[][] is only a visual representation 
  * of the maze 
@@ -11,7 +12,7 @@ public class Simulator
 	private Maze maze;
 
 		
-	public void run()
+	public void run() throws InterruptedException
 	{
 		Scanner sc = new Scanner(System.in);
 		int x, y, nSize;
@@ -33,7 +34,8 @@ public class Simulator
 		{
 			while(x != -1 && y != -1)
 			{
-				maze.wallify(x, y);
+				//wait() method 
+				maze.wallify(x-1, y-1);
 				maze.display();
 				x = sc.nextInt();
 				y = sc.nextInt();
@@ -44,10 +46,19 @@ public class Simulator
 			
 		}
 
-		
+	
 		System.out.print("Press anything to start simulation\n ");
 		while(maze.isFinished() == false)
 		{
+			try
+			{
+				Runtime.getRuntime().exec("cls"); //it should clear the screen every iteration but it doesnt work help
+			}
+			catch(Exception e)
+			{
+				
+			}
+				Thread.sleep(1000);
 				maze.moveForward();
 				nSteps++;
 				maze.display(); 
@@ -59,5 +70,10 @@ public class Simulator
 		
 		sc.close();
 	}
+	
+	public static void clearScreen() {  
+	    System.out.print("\033[H\033[2J");  
+	    System.out.flush();  
+	}  
 
 }
