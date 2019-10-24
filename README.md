@@ -1,4 +1,5 @@
-# mazebot
+# we did it bois 
+mazebot
 fundamental classes:  - bot, maze, simulator, timertask (maybe), driver
 
 fundamental classes:
