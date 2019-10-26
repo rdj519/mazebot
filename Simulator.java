@@ -17,7 +17,8 @@ public class Simulator
 		Scanner sc = new Scanner(System.in);
 		int x, y, nSize;
 		String input;
-		int nSteps = 0;
+		int nSteps = 0; //steps means if the bot moves from one step to another
+		int nActions = 0; //includes steps AND other movement such as turning (for all: actions >= steps)
 		
 		System.out.println("Enter size: ");
 		input = sc.nextLine();
@@ -27,14 +28,13 @@ public class Simulator
 		maze = new Maze(nSize, bot); //it means that the bot is already in the starting state
 		
 		maze.display();
-		System.out.print("\n\nEnter coordinates for barricading (-1 to stop): ");
+		System.out.print("\n\nEnter coordinates for barricading (-1 -1 to stop and start simulation): ");
 		x = sc.nextInt();
 		y = sc.nextInt();
 		try 
 		{
 			while(x != -1 && y != -1)
 			{
-				//wait() method 
 				maze.wallify(x-1, y-1);
 				maze.display();
 				x = sc.nextInt();
@@ -46,8 +46,7 @@ public class Simulator
 			
 		}
 
-	
-		System.out.print("Press anything to start simulation\n ");
+		System.out.print("Simulation Started\n ");
 		while(maze.isFinished() == false)
 		{
 			try
@@ -58,22 +57,25 @@ public class Simulator
 			{
 				
 			}
-				Thread.sleep(1000);
-				maze.moveForward();
-				nSteps++;
-				maze.display(); 
+				int currX = maze.getBotX(); //current bot position (x)
+				int currY = maze.getBotY(); //current bot position (y)
+				
+				Thread.sleep(1000); //animation is 1 frame per second
+				nActions += maze.moveForward(); //simulates the bot and adds the actions performed
+				if(maze.getBotX() != currX || maze.getBotY() != currY) //if bot position changed (it moved)
+					nSteps++;
+				maze.display(); //display the board and bot
+				System.out.println("Steps: " + nSteps);
+				System.out.println("Actions: "+ nActions);
 			
 		}
-		
-		System.out.println("Steps: " + nSteps);
-		
+		sc.nextLine();
+		System.out.println("Display log? (y/n): "); input = sc.nextLine();
+		if(input.equalsIgnoreCase("y"))
+			System.out.println("\nMaze Bot Actions Log:\n\n" + maze.getLog()); //displays actions log
 		
 		sc.close();
 	}
 	
-	public static void clearScreen() {  
-	    System.out.print("\033[H\033[2J");  
-	    System.out.flush();  
-	}  
 
 }

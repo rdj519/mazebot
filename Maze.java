@@ -4,13 +4,15 @@ public class Maze {
 
 	private char grid[][]; //physical representation
 	private boolean state[][]; //state (if a coordinate should be explored)
-	//private boolean intersect[][]; //maps the coordinates that have more than one adjacent space
+	//private boolean intersect[][]; //maps the coordinates that have more than one adjacent space (not important anymore)
 	private int n; //dimension
 	private int currX, currY;
 	private Bot b;
+	private String log;
 	
 	public Maze(int n, Bot b) 
 	{
+		this.log = "";
 		this.n = n;
 		this.b = b;
 		grid = new char[n][n]; //visual representation of maze ('#' if wall, ' ' if space)
@@ -25,7 +27,7 @@ public class Maze {
 		state[y][x] = false;
 	}
 	
-	/* if free space leads to dead end, use this function */
+	/* if free space leads to dead end, use this function (might not be useful anymore)*/
 	public void falsify(int x, int y)
 	{
 		state[y][x] = false;
@@ -75,29 +77,40 @@ public class Maze {
 	
 	/* Moving the bot in different directions*/
 	/* moves forward*/
-	public void moveForward() 
+	public int moveForward() 
 	{
+		int nActions = 0;
 		try 
 		{
 			if(getLeft()) //if there is space in the left
 			{
 				b.turn("left");
+				nActions++;
+				log = log + "Turned left\n";
 				if(b.getDir().equalsIgnoreCase("right")) // > will move forward to the right
 				{
 					update(currX+1, currY); 
+					nActions++;
+					log = log + "Moved forward\n";
 				}
 				else if(b.getDir().equalsIgnoreCase("down")) // v will move downwards -1 y
 				{
-					update(currX, currY+1); //swapped Y
+					update(currX, currY+1); //swapped Y (explanation: in this orientation, adding of Y means going down)
+					nActions++;
+					log = log + "Moved forward\n";
 				}
 				else if(b.getDir().equalsIgnoreCase("up")) // ^
 				{
 					update(currX, currY-1); //swapped Y
+					nActions++;
+					log = log + "Moved forward\n";
 				}
 					
 				else if(b.getDir().equalsIgnoreCase("left")) // <
 				{
 					update(currX-1, currY);
+					nActions++;
+					log = log + "Moved forward\n";
 				}
 					
 			}
@@ -106,33 +119,44 @@ public class Maze {
 				if(b.getDir().equalsIgnoreCase("down"))
 				{
 					update(currX, currY+1); //swapped Y
+					nActions++;
+					log = log + "Moved forward\n";
 				}
 					
 				else if(b.getDir().equalsIgnoreCase("up"))
 				{
 					update(currX, currY-1); //swapped Y
+					nActions++;
+					log = log + "Moved forward\n";
 				}
 					
 				else if(b.getDir().equalsIgnoreCase("left"))
 				{
 					update(currX-1, currY);
+					nActions++;
+					log = log + "Moved forward\n";
 				}
 					
 				else if(b.getDir().equalsIgnoreCase("right"))
 				{
 					update(currX+1, currY);
+					nActions++;
+					log = log + "Moved forward\n";
 				}
 			}
 			else
 			{
 				b.turn("right");
+				nActions++;
+				log = log + "Turned right\n";
 				update(currX, currY);
 			}
+			return nActions;
 			
 		}
 		catch(Exception e)
 		{
-			
+			return nActions;
 		}
 	}
 
@@ -199,8 +223,11 @@ public class Maze {
 		}
 	}
 
-	
-	
+	/* gets the movement log of the bot*/
+	public String getLog()
+	{
+		return log;
+	}
 	/* gets the state of a grid coordinate (since grid and state array are the same) */
 	/* if it is not either # or ' ', it is bot */
 	public boolean getGridState(int x, int y)
@@ -211,11 +238,20 @@ public class Maze {
 	/* display the maze */
 	public void display()
 	{
-		
 		/* horizontal plane (x) */
 		System.out.print("   "); //3 spaces
 		for(int i = 0; i < n; i++)
-			System.out.print(i+1 + " ");
+		{
+			if(i < 9)
+			{
+				System.out.print(i+1);
+			}
+			else 
+			{
+				System.out.print((i+1)/10);
+			}
+			System.out.print(" ");
+		}
 		
 		System.out.println();
 		
@@ -225,18 +261,29 @@ public class Maze {
 			System.out.print(i+1 + "  ");// 2 spaces
 			for(int j=0; j<n; j++)
 				System.out.print(grid[i][j] + " ");
-			System.out.print("  ");
-			System.out.println(i+1);
+			System.out.println("  ");
+			//System.out.println(i+1);
 		}
 		
 		/* horizontal plane (x) */
 		System.out.print("   "); //3 spaces
 		for(int i = 0; i < n; i++)
-			System.out.print(i+1 + " ");
+		{
+			if(i < 9)
+			{
+				System.out.print(i+1);
+			}
+			else 
+			{
+				System.out.print((i+1)/10);
+			}
+			System.out.print(" ");
+		}
 		
 		System.out.println();
 		
 		System.out.println("State: " + b.getDir());
+		
 	}
 
 }
