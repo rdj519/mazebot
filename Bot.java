@@ -1,3 +1,9 @@
+/*
+
+This class, Bot, handles the physical representation of the Bot object.
+Also, it contains the state of the bot.
+
+*/
 
 public class Bot {
 
@@ -9,7 +15,7 @@ public class Bot {
 		this.state = "down"; //this means that the node is facing down (v), all simulations start with this. 
 	}
 	
-	public void updateSymbol(String prevState, String dir)
+	public void updateSymbol(String prevState, String dir)			/*	Note: Updates the symbol or physical appearance of the bot.	*/
 	{
 		
 		if(prevState.equalsIgnoreCase("down"))
@@ -42,7 +48,7 @@ public class Bot {
 		}
 	}
 	
-	public void turn(String dir)
+	public void turn(String dir)										/*	Note: Updates the state of turns of the bot.	*/
 	{
 		String prevState = this.state;
 
