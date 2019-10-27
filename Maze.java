@@ -1,5 +1,11 @@
 /*
 
+DELIMA JR., REYNALDO K.
+JATICO II, NILO CANTIL K.
+CHU, CHUAN CHEN
+
+SECTION: S15
+
 The class, Maze, is responsible for the physical representation of the maze.
 It is also acting as the logic or guide of the bot, and handles the state of the maze.
 
@@ -7,6 +13,9 @@ It is also acting as the logic or guide of the bot, and handles the state of the
 
 public class Maze {
 
+	// The actual traversing of the bot is based on the state[][] array, 
+	// grid[][] is only a visual representation of the maze.
+	
 	private char grid[][]; 							//physical representation
 	private boolean state[][]; 						//state (if a coordinate should be explored)
 	private int n; 									//dimension
@@ -266,7 +275,6 @@ public class Maze {
 			for(int j=0; j<n; j++)
 				System.out.print(grid[i][j] + " ");
 			System.out.println("  ");
-			//System.out.println(i+1);
 		}
 		
 		/* horizontal plane (x) */

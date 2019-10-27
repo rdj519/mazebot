@@ -1,6 +1,17 @@
-import java.util.*;
 
-/* The chosen algorithm will be implemented here, as well as the simulation, and counting of moves etc.*/
+/*
+ * DELIMA JR., REYNALDO K.
+ * JATICO II, NILO CANTIL K.
+ * CHU, CHUAN CHEN
+ * 
+ * SECTION: S15
+ * 
+ * 
+ * 
+ * 
+ *
+ * The simulation of the bot will be implemented here as well as the counting of moves etc.
+ */
 
 /*
 
@@ -8,7 +19,7 @@ This class, Simulator, acts as the brain of the bot and handles the run of the p
 
 */
 
-// The actual traversing of the bot is based on the state[][] array, grid[][] is only a visual representation of the maze.
+import java.util.*;
 
 public class Simulator 
 {
@@ -21,8 +32,8 @@ public class Simulator
 		Scanner sc = new Scanner(System.in);
 		int x, y, nSize;
 		String input;
-		int nSteps = 0; //steps means if the bot moves from one step to another
-		int nActions = 0; //includes steps AND other movement such as turning (for all: actions >= steps)
+		int nSteps = 0; 	//steps means if the bot moves from one step to another
+		int nActions = 0;   //includes steps AND other movement such as turning (for all: actions > steps)
 		
 		System.out.println("Enter size: ");
 		input = sc.nextLine();
@@ -55,7 +66,7 @@ public class Simulator
 		{
 			try
 			{
-				Runtime.getRuntime().exec("cls"); //it should clear the screen every iteration but it doesnt work help
+				Runtime.getRuntime().exec("cls"); 
 			}
 			catch(Exception e)
 			{
