@@ -1,11 +1,15 @@
+/*
 
-/* LEFT IS Y AND RIGHT IS X -- JAVA IS RETARDED*/
+The class, Maze, is responsible for the physical representation of the maze.
+It is also acting as the logic or guide of the bot, and handles the state of the maze.
+
+*/
+
 public class Maze {
 
-	private char grid[][]; //physical representation
-	private boolean state[][]; //state (if a coordinate should be explored)
-	//private boolean intersect[][]; //maps the coordinates that have more than one adjacent space (not important anymore)
-	private int n; //dimension
+	private char grid[][]; 							//physical representation
+	private boolean state[][]; 						//state (if a coordinate should be explored)
+	private int n; 									//dimension
 	private int currX, currY;
 	private Bot b;
 	private String log;
@@ -15,8 +19,8 @@ public class Maze {
 		this.log = "";
 		this.n = n;
 		this.b = b;
-		grid = new char[n][n]; //visual representation of maze ('#' if wall, ' ' if space)
-		state = new boolean[n][n]; //obstacle representation of maze (true if space, false if wall)
+		grid = new char[n][n]; 						//visual representation of maze ('#' if wall, ' ' if space)
+		state = new boolean[n][n]; 					//obstacle representation of maze (true if space, false if wall)
 		initialize();
 	}
 	
@@ -42,9 +46,9 @@ public class Maze {
 				grid[i][j] = ' ';
 				state[i][j] = true;
 			}
-		this.currX = 0; //current x coordinate of bot
-		this.currY = 0; //current y coordinate of bot
-		grid[currY][currX] = b.getSymbol(); //starting point
+		this.currX = 0; 						//current x coordinate of bot
+		this.currY = 0; 						//current y coordinate of bot
+		grid[currY][currX] = b.getSymbol(); 	//starting point
 	}
 	
 	/* new location of bot, and displays the updated */
@@ -82,31 +86,31 @@ public class Maze {
 		int nActions = 0;
 		try 
 		{
-			if(getLeft()) //if there is space in the left
+			if(getLeft()) 												//if there is space in the left
 			{
 				b.turn("left");
 				nActions++;
 				log = log + "Turned left\n";
-				if(b.getDir().equalsIgnoreCase("right")) // > will move forward to the right
+				if(b.getDir().equalsIgnoreCase("right")) 				// > will move forward to the right
 				{
 					update(currX+1, currY); 
 					nActions++;
 					log = log + "Moved forward\n";
 				}
-				else if(b.getDir().equalsIgnoreCase("down")) // v will move downwards -1 y
+				else if(b.getDir().equalsIgnoreCase("down")) 			// v will move downwards -1 y
 				{
-					update(currX, currY+1); //swapped Y (explanation: in this orientation, adding of Y means going down)
+					update(currX, currY+1); 							//swapped Y (explanation: in this orientation, adding of Y means going down)
 					nActions++;
 					log = log + "Moved forward\n";
 				}
-				else if(b.getDir().equalsIgnoreCase("up")) // ^
+				else if(b.getDir().equalsIgnoreCase("up")) 				// ^
 				{
-					update(currX, currY-1); //swapped Y
+					update(currX, currY-1); 							//swapped Y
 					nActions++;
 					log = log + "Moved forward\n";
 				}
 					
-				else if(b.getDir().equalsIgnoreCase("left")) // <
+				else if(b.getDir().equalsIgnoreCase("left")) 			// <
 				{
 					update(currX-1, currY);
 					nActions++;
@@ -118,14 +122,14 @@ public class Maze {
 			{
 				if(b.getDir().equalsIgnoreCase("down"))
 				{
-					update(currX, currY+1); //swapped Y
+					update(currX, currY+1); 							//swapped Y
 					nActions++;
 					log = log + "Moved forward\n";
 				}
 					
 				else if(b.getDir().equalsIgnoreCase("up"))
 				{
-					update(currX, currY-1); //swapped Y
+					update(currX, currY-1); 							//swapped Y
 					nActions++;
 					log = log + "Moved forward\n";
 				}

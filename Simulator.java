@@ -1,11 +1,15 @@
 import java.util.*;
+
 /* The chosen algorithm will be implemented here, as well as the simulation, and counting of moves etc.*/
 
-/* JAVA IS RETARDED X AND Y BALIKTAD */
+/*
 
-/* The actual traversing of the bot is based on the state[][] array, grid[][] is only a visual representation 
- * of the maze 
- */
+This class, Simulator, acts as the brain of the bot and handles the run of the program.
+
+*/
+
+// The actual traversing of the bot is based on the state[][] array, grid[][] is only a visual representation of the maze.
+
 public class Simulator 
 {
 	private Bot bot;
